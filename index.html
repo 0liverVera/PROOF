@@ -1,0 +1,3339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROOF — X Growth Intelligence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #080810;
+    --bg2: #0a0a16;
+    --card: #0f0f1a;
+    --card2: #111120;
+    --border: #1a1a2e;
+    --border2: #22223a;
+    --indigo: #6366f1;
+    --indigo2: #4f51d4;
+    --purple: #a855f7;
+    --purple2: #9333ea;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --gray2: #4b5563;
+    --muted: #374151;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --orange: #f97316;
+    --red: #ef4444;
+    --glow-i: rgba(99,102,241,0.3);
+    --glow-p: rgba(168,85,247,0.3);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  /* NAV */
+  #nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    height: 64px;
+    background: rgba(8,8,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 8px;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    margin-right: 16px;
+    cursor: pointer;
+    text-shadow: none;
+    filter: drop-shadow(0 0 20px rgba(99,102,241,0.5));
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .nav-link {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover { color: var(--white); background: var(--card); }
+  .nav-link.active { color: var(--indigo); background: rgba(99,102,241,0.1); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+  }
+
+  .nav-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    font-size: 13px;
+  }
+
+  .tier-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tier-free { background: rgba(107,114,128,0.2); color: var(--gray); }
+  .tier-pro { background: rgba(99,102,241,0.2); color: var(--indigo); border: 1px solid rgba(99,102,241,0.3); }
+  .tier-elite { background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(168,85,247,0.2)); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+
+  .btn-connect-nav {
+    padding: 7px 16px;
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .btn-connect-nav:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    padding: 8px;
+    background: none;
+    border: none;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 1px;
+    transition: all 0.3s;
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0; right: 0;
+    background: rgba(8,8,16,0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px;
+    z-index: 999;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobile-menu.open { display: flex; }
+  .mobile-menu .nav-link { font-size: 15px; padding: 10px 14px; }
+
+  /* VIEWS */
+  .view {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding-top: 64px;
+    min-height: 100vh;
+  }
+
+  .view.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .view.fade-in {
+    animation: fadeIn 0.4s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============================================
+     VIEW 1: LANDING PAGE
+     ============================================ */
+
+  .hero {
+    position: relative;
+    min-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(168,85,247,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 30% at 20% 70%, rgba(99,102,241,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 80%);
+  }
+
+  .proof-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(80px, 14vw, 160px);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -4px;
+    background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 40%, #c084fc 70%, #e879f9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 60px rgba(99,102,241,0.4));
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-tagline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 4vw, 38px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-sub {
+    font-size: clamp(14px, 2vw, 17px);
+    color: #9ca3af;
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 40px;
+  }
+
+  .btn-primary {
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.5s;
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99,102,241,0.4); }
+  .btn-primary:hover::after { left: 150%; }
+
+  .btn-secondary {
+    padding: 14px 28px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--indigo);
+    background: rgba(99,102,241,0.08);
+    transform: translateY(-2px);
+  }
+
+  .urgency-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 30px;
+    font-size: 13px;
+    color: #6ee7b7;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse-green 1.5s infinite;
+  }
+
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+  }
+
+  /* PAIN POINTS */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--indigo);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 40px;
+  }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .pain-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pain-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(99,102,241,0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .pain-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(99,102,241,0.1);
+  }
+
+  .pain-card:hover::before { opacity: 1; }
+
+  .pain-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .pain-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .pain-card p {
+    font-size: 14px;
+    color: #9ca3af;
+    line-height: 1.6;
+  }
+
+  /* HOW IT WORKS */
+  .steps-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    margin-top: 40px;
+  }
+
+  .steps-row::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: calc(12.5% + 28px);
+    right: calc(12.5% + 28px);
+    height: 1px;
+    background: linear-gradient(90deg, var(--indigo), var(--purple));
+    opacity: 0.3;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 16px;
+  }
+
+  .step-num {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 30px rgba(99,102,241,0.3);
+  }
+
+  .step h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: all 0.3s;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(99,102,241,0.3);
+    box-shadow: 0 0 30px rgba(99,102,241,0.08);
+    transform: translateY(-2px);
+  }
+
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .feature-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .feature-card p {
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.5;
+  }
+
+  /* SCORE EXPLAINER */
+  .score-explainer {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px;
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .score-circle-wrap {
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .score-svg {
+    width: 160px;
+    height: 160px;
+    transform: rotate(-90deg);
+  }
+
+  .score-circle-bg { fill: none; stroke: var(--border2); stroke-width: 8; }
+  .score-circle-fill {
+    fill: none;
+    stroke: url(#scoreGrad);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .score-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .score-label {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .score-metrics { flex: 1; }
+
+  .metric-row {
+    margin-bottom: 14px;
+  }
+
+  .metric-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+
+  .metric-name { color: #d1d5db; font-weight: 500; }
+  .metric-score { font-family: 'JetBrains Mono', monospace; color: var(--indigo); font-size: 12px; }
+
+  .metric-bar-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .metric-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--indigo), var(--purple));
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .price-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .price-card.featured {
+    border-color: rgba(99,102,241,0.4);
+    background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(168,85,247,0.05));
+  }
+
+  .price-card.featured::before {
+    content: 'MOST POPULAR';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 14px;
+    border-radius: 0 0 8px 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .price-tier {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .price-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .price-sub {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .price-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 24px;
+  }
+
+  .price-features li {
+    font-size: 13px;
+    color: #9ca3af;
+    padding: 6px 0;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .price-features li::before {
+    content: '✓';
+    color: var(--green);
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .social-proof-bar {
+    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.08));
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 16px;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .proof-stat {
+    text-align: center;
+  }
+
+  .proof-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .proof-stat-label {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 4px;
+  }
+
+  .footer {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    color: var(--gray);
+    font-size: 13px;
+    cursor: pointer;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+
+  .footer-link:hover { color: var(--white); }
+
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--gray2);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ============================================
+     VIEW 2: ANALYZE
+     ============================================ */
+
+  .analyze-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  .analyze-step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 48px;
+    text-align: center;
+  }
+
+  .x-logo {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 24px;
+    background: var(--white);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 900;
+    color: #000;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .analyze-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .analyze-sub {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 32px;
+  }
+
+  .input-group {
+    margin-bottom: 16px;
+    text-align: left;
+  }
+
+  .input-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray);
+    margin-bottom: 8px;
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    color: var(--white);
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.2s;
+    outline: none;
+  }
+
+  .input-field:focus {
+    border-color: var(--indigo);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+  }
+
+  .input-field::placeholder { color: var(--gray2); }
+
+  /* LOADING */
+  .loading-screen {
+    display: none;
+    padding: 48px;
+    text-align: center;
+  }
+
+  .loading-screen.active { display: block; }
+
+  .loading-spinner {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 24px;
+    border: 3px solid var(--border2);
+    border-top-color: var(--indigo);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-step {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .loading-step.visible { opacity: 1; color: var(--indigo); }
+  .loading-step.done { opacity: 0.5; color: var(--green); }
+
+  /* DASHBOARD */
+  #dashboard {
+    display: none;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  #dashboard.active { display: block; }
+
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .dashboard-handle {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .dashboard-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .score-big-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+
+  .score-big-svg {
+    width: 200px;
+    height: 200px;
+    transform: rotate(-90deg);
+  }
+
+  .score-big-circle-bg { fill: none; stroke: var(--border2); stroke-width: 10; }
+  .score-big-circle-fill {
+    fill: none;
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 565;
+    stroke-dashoffset: 565;
+    transition: stroke-dashoffset 2s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .score-big-center {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    margin-top: -200px;
+  }
+
+  .score-big-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .score-big-label {
+    font-size: 12px;
+    color: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .metrics-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+
+  .metrics-section h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* PROBLEMS */
+  .problems-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .problem-card {
+    background: var(--card);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .problem-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .problem-content h4 {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 15px;
+    color: #fca5a5;
+  }
+
+  .problem-content p {
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.6;
+  }
+
+  /* ACTION PLAN */
+  .action-plan {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+
+  .action-plan h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .action-day {
+    display: flex;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .action-day:last-child { border-bottom: none; }
+
+  .day-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--indigo);
+    flex-shrink: 0;
+  }
+
+  .action-text {
+    font-size: 13px;
+    color: #d1d5db;
+    line-height: 1.5;
+    padding-top: 8px;
+  }
+
+  .share-section {
+    text-align: center;
+    padding: 32px 0 16px;
+  }
+
+  .btn-share {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+
+  .btn-share:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99,102,241,0.4); }
+
+  .upgrade-prompt {
+    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.08));
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 16px;
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .upgrade-prompt h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .upgrade-prompt p {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 20px;
+  }
+
+  /* ============================================
+     VIEW 3: POST GRADER
+     ============================================ */
+
+  .grader-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  .view-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+
+  .view-sub {
+    font-size: 15px;
+    color: var(--gray);
+    margin-bottom: 40px;
+  }
+
+  .tweet-input-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .tweet-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 16px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+  }
+
+  .tweet-textarea::placeholder { color: var(--gray2); }
+
+  .char-counter {
+    text-align: right;
+    font-size: 12px;
+    color: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .char-counter.warning { color: var(--yellow); }
+  .char-counter.danger { color: var(--red); }
+
+  /* GRADE RESULT */
+  .grade-result {
+    display: none;
+  }
+
+  .grade-result.active { display: block; }
+
+  .grade-overview {
+    display: flex;
+    gap: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+
+  .grade-circle-wrap {
+    flex-shrink: 0;
+    position: relative;
+    width: 120px;
+    height: 120px;
+  }
+
+  .grade-svg {
+    width: 120px;
+    height: 120px;
+    transform: rotate(-90deg);
+  }
+
+  .grade-bg { fill: none; stroke: var(--border2); stroke-width: 8; }
+  .grade-fill {
+    fill: none;
+    stroke: url(#gradeGrad);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 330;
+    stroke-dashoffset: 330;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .grade-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .grade-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+  }
+
+  .grade-out {
+    font-size: 11px;
+    color: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .grade-details { flex: 1; }
+  .grade-details h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .grade-breakdown {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .grade-breakdown h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .breakdown-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .breakdown-item:last-child { border-bottom: none; }
+
+  .breakdown-label {
+    font-size: 12px;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 4px;
+  }
+
+  .breakdown-text {
+    font-size: 14px;
+    color: #d1d5db;
+    line-height: 1.5;
+  }
+
+  .rewrite-box {
+    background: rgba(99,102,241,0.05);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .rewrite-box h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--indigo);
+  }
+
+  .rewrite-box .sub { font-size: 12px; color: var(--gray); margin-bottom: 16px; }
+
+  .rewrite-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .btn-copy {
+    padding: 8px 18px;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 8px;
+    color: var(--indigo);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .btn-copy:hover { background: rgba(99,102,241,0.25); }
+
+  /* HOOK GENERATOR */
+  .hook-gen {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 32px;
+  }
+
+  .hook-gen h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .hook-gen p {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 20px;
+  }
+
+  .hook-input-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .hook-input-row .input-field { flex: 1; }
+
+  .hooks-list { display: none; }
+  .hooks-list.active { display: block; }
+
+  .hook-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .hook-item:hover { border-color: var(--border2); }
+
+  .hook-text {
+    font-size: 14px;
+    color: #d1d5db;
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  /* ============================================
+     VIEW 4: VIRAL TRACKER
+     ============================================ */
+
+  .tracker-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .topic-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .topic-card:hover {
+    border-color: rgba(99,102,241,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+  }
+
+  .topic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .topic-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .momentum-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  .momentum-hot { background: rgba(239,68,68,0.15); color: #fca5a5; }
+  .momentum-warm { background: rgba(245,158,11,0.15); color: #fcd34d; }
+  .momentum-cool { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+
+  .topic-posts {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .topic-bar-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .topic-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--indigo), var(--purple));
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .topic-hook {
+    font-size: 12px;
+    color: #9ca3af;
+    line-height: 1.5;
+    font-style: italic;
+    margin-bottom: 12px;
+    min-height: 40px;
+  }
+
+  /* MOMENTUM CHART */
+  .momentum-chart {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 16px;
+  }
+
+  .momentum-chart h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  .chart-bars {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    height: 140px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chart-bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 4px;
+  }
+
+  .chart-bar-label {
+    font-size: 9px;
+    color: var(--gray);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .chart-bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    background: linear-gradient(0deg, var(--indigo), var(--purple));
+    transition: height 1s cubic-bezier(0.4,0,0.2,1);
+    min-height: 4px;
+  }
+
+  .chart-bar-pct {
+    font-size: 11px;
+    color: #d1d5db;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+
+  .updated-time {
+    font-size: 12px;
+    color: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right;
+    margin-top: 8px;
+  }
+
+  /* ============================================
+     VIEW 5: LEADERBOARD
+     ============================================ */
+
+  .lb-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+
+  .prize-banner {
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1));
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .prize-text {
+    font-size: 13px;
+    color: #d1d5db;
+  }
+
+  .prize-text strong {
+    color: var(--purple);
+  }
+
+  .countdown {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    background: rgba(0,0,0,0.3);
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border2);
+  }
+
+  .countdown span {
+    color: var(--indigo);
+  }
+
+  .lb-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 20px;
+    display: inline-flex;
+  }
+
+  .lb-tab {
+    padding: 8px 20px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--gray);
+    transition: all 0.2s;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+
+  .lb-tab.active {
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    color: white;
+  }
+
+  .lb-table {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .lb-header {
+    display: grid;
+    grid-template-columns: 50px 1fr 80px 100px 80px 80px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .lb-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 80px 100px 80px 80px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background 0.2s;
+    font-size: 14px;
+  }
+
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: rgba(99,102,241,0.05); }
+  .lb-row.user-row { background: rgba(99,102,241,0.08); border-left: 3px solid var(--indigo); }
+
+  .rank-medal { font-size: 18px; text-align: center; }
+  .rank-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gray);
+    text-align: center;
+  }
+
+  .lb-handle {
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .lb-handle .handle-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  .lb-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--indigo);
+    text-align: center;
+  }
+
+  .lb-gained {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    text-align: center;
+  }
+
+  .lb-posts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--gray);
+    text-align: center;
+  }
+
+  .my-rank-card {
+    background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.08));
+    border: 1px solid rgba(99,102,241,0.25);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .my-rank-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .my-rank-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .my-rank-stat {
+    text-align: center;
+  }
+
+  .my-rank-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--indigo), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .my-rank-label {
+    font-size: 11px;
+    color: var(--gray);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+  }
+
+  .progress-to-next {
+    margin-top: 12px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .progress-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--indigo), var(--purple));
+    border-radius: 3px;
+    width: 0;
+    transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* TOAST */
+  #toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: var(--card2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideInToast 0.3s ease forwards;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    pointer-events: all;
+    min-width: 220px;
+  }
+
+  .toast.success { border-color: rgba(16,185,129,0.3); }
+  .toast.info { border-color: rgba(99,102,241,0.3); }
+
+  @keyframes slideInToast {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes slideOutToast {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(20px); }
+  }
+
+  .toast.hiding { animation: slideOutToast 0.3s ease forwards; }
+
+  /* CONFETTI */
+  .confetti-piece {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 9998;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+  }
+
+  /* SKELETON */
+  .skeleton {
+    background: linear-gradient(90deg, var(--border) 25%, var(--border2) 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-wave 1.5s infinite;
+    border-radius: 6px;
+  }
+
+  @keyframes skeleton-wave {
+    from { background-position: 200% center; }
+    to { background-position: -200% center; }
+  }
+
+  /* PULSING DOT */
+  .pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--purple);
+    animation: pulse-purple 2s infinite;
+  }
+
+  @keyframes pulse-purple {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(168,85,247,0.5); }
+    50% { box-shadow: 0 0 0 6px rgba(168,85,247,0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .pain-grid, .features-grid { grid-template-columns: 1fr; }
+    .steps-row { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .steps-row::before { display: none; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+    .score-explainer { flex-direction: column; align-items: center; text-align: center; padding: 32px 24px; gap: 32px; }
+    .topics-grid { grid-template-columns: repeat(2, 1fr); }
+    .lb-header, .lb-row { grid-template-columns: 40px 1fr 70px 90px; }
+    .lb-header > *:nth-child(5), .lb-header > *:nth-child(6),
+    .lb-row > *:nth-child(5), .lb-row > *:nth-child(6) { display: none; }
+    .social-proof-bar { flex-direction: column; align-items: center; }
+    .hamburger { display: flex; }
+    .nav-links { display: none; }
+    .grade-overview { flex-direction: column; }
+  }
+
+  @media (max-width: 600px) {
+    .topics-grid { grid-template-columns: 1fr; }
+    .analyze-step { padding: 28px 20px; }
+    .lb-header, .lb-row { grid-template-columns: 40px 1fr 70px; }
+    .lb-header > *:nth-child(4),
+    .lb-row > *:nth-child(4) { display: none; }
+    .prize-banner { flex-direction: column; }
+    .hook-input-row { flex-direction: column; }
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 24px;
+  }
+
+  /* UTIL */
+  .text-indigo { color: var(--indigo); }
+  .text-purple { color: var(--purple); }
+  .text-green { color: var(--green); }
+  .text-gray { color: var(--gray); }
+  .text-center { text-align: center; }
+  .mt-8 { margin-top: 8px; }
+  .mt-16 { margin-top: 16px; }
+  .mt-24 { margin-top: 24px; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-16 { margin-bottom: 16px; }
+  .mb-24 { margin-bottom: 24px; }
+  .flex { display: flex; }
+  .items-center { align-items: center; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  #analyze-form { display: block; }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <div class="nav-logo" onclick="showView('landing')">PROOF</div>
+  <div class="nav-links">
+    <button class="nav-link" onclick="showView('analyze')" data-view="analyze">Analyze</button>
+    <button class="nav-link" onclick="showView('grader')" data-view="grader">Post Grader</button>
+    <button class="nav-link" onclick="showView('tracker')" data-view="tracker">Viral Tracker</button>
+    <button class="nav-link" onclick="showView('leaderboard')" data-view="leaderboard">Leaderboard</button>
+  </div>
+  <div class="nav-right">
+    <div id="nav-user" style="display:none" class="nav-user">
+      <span id="nav-handle" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#d1d5db"></span>
+      <span id="nav-tier" class="tier-badge tier-free">FREE</span>
+    </div>
+    <button class="btn-connect-nav" id="nav-connect-btn" onclick="showView('analyze')">Connect Account</button>
+  </div>
+  <button class="hamburger" onclick="toggleMobile()" id="hamburger">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="nav-link" onclick="showView('analyze');closeMobile()">Analyze</button>
+  <button class="nav-link" onclick="showView('grader');closeMobile()">Post Grader</button>
+  <button class="nav-link" onclick="showView('tracker');closeMobile()">Viral Tracker</button>
+  <button class="nav-link" onclick="showView('leaderboard');closeMobile()">Leaderboard</button>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- ============================================
+     VIEW 1: LANDING
+     ============================================ -->
+<div class="view active fade-in" id="view-landing">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="proof-title">PROOF</div>
+    <h1 class="hero-tagline">Stop Guessing. Start Growing.</h1>
+    <p class="hero-sub">The first real-time X growth intelligence platform. Know exactly why you are not growing and exactly what to fix.</p>
+    <div class="hero-buttons">
+      <button class="btn-primary" onclick="showView('analyze')">Analyze My X Account — Free</button>
+      <button class="btn-secondary" onclick="showView('leaderboard')">See Live Leaderboard</button>
+    </div>
+    <div class="urgency-bar">
+      <div class="live-dot"></div>
+      <span>LIVE — <strong>1,247</strong> accounts analyzed today — <strong>89 accounts</strong> grew 100+ followers this week using PROOF</span>
+    </div>
+  </section>
+
+  <!-- PAIN POINTS -->
+  <section class="section">
+    <div class="section-label">The Problem</div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">👻</div>
+        <h3>You post and nobody sees it</h3>
+        <p>Your posts have no hook, wrong format, posted at the wrong time. PROOF shows you exactly what went wrong.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">❓</div>
+        <h3>You don't know what works</h3>
+        <p>What worked 6 months ago is dead. PROOF tracks what is actually going viral on CT right now and tells you to copy it.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📈</div>
+        <h3>Everyone else is growing except you</h3>
+        <p>See exactly which accounts are growing fastest this week and what they are doing differently.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <div class="section-label">How It Works</div>
+    <div class="section-title">Four steps to real growth</div>
+    <div class="steps-row">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Connect your X handle</h3>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>PROOF grades your last 10 posts on 5 metrics</h3>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Get your PROOF Score and full breakdown</h3>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Follow the daily action plan and watch your numbers move</h3>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- FEATURES -->
+  <section class="section">
+    <div class="section-label">Features</div>
+    <div class="section-title">Everything you need to dominate</div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Post Grader</h3>
+        <p>Paste any tweet and get an instant score out of 100 with line by line feedback before you post.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🪝</div>
+        <h3>Hook Analyzer</h3>
+        <p>The first line of your tweet makes or breaks it. PROOF grades your hook and rewrites it better.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏰</div>
+        <h3>Optimal Timing</h3>
+        <p>Shows the exact times your specific audience is online based on CT patterns and engagement windows.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔥</div>
+        <h3>Viral Tracker</h3>
+        <p>What topics are exploding on CT right now — updated every hour. Never miss a trending wave again.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Growth Leaderboard</h3>
+        <p>Public ranking of fastest growing accounts using PROOF this week. Win $PROOF prizes every Sunday.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Weekly Action Plan</h3>
+        <p>7 specific things to do this week to grow. Not generic. Based on your account and your niche.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- SCORE EXPLAINER -->
+  <section class="section">
+    <div class="section-label">The PROOF Score</div>
+    <div class="section-title text-center">Your growth grade, demystified</div>
+    <div class="score-explainer" id="score-explainer">
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="#a855f7"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="score-circle-wrap">
+        <svg class="score-svg" viewBox="0 0 160 160">
+          <circle class="score-circle-bg" cx="80" cy="80" r="70"/>
+          <circle class="score-circle-fill" id="landing-score-fill" cx="80" cy="80" r="70"/>
+        </svg>
+        <div class="score-center">
+          <div class="score-num" id="landing-score-num">0</div>
+          <div class="score-label">/ 100</div>
+        </div>
+      </div>
+      <div class="score-metrics">
+        <div class="mb-16" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700">Your PROOF Score Breakdown</div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Hook Strength</span><span class="metric-score" id="m1-score">15/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="m1-bar" style="width:0"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Engagement Mechanics</span><span class="metric-score" id="m2-score">14/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="m2-bar" style="width:0"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Timing Optimization</span><span class="metric-score" id="m3-score">16/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="m3-bar" style="width:0"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Topic Relevance</span><span class="metric-score" id="m4-score">13/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="m4-bar" style="width:0"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Format & Structure</span><span class="metric-score" id="m5-score">15/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="m5-bar" style="width:0"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- PRICING -->
+  <section class="section">
+    <div class="section-label">Pricing</div>
+    <div class="section-title text-center">Built for every level</div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Free</div>
+        <div class="price-amount">$0</div>
+        <div class="price-sub">FOREVER FREE</div>
+        <ul class="price-features">
+          <li>Connect your X account</li>
+          <li>Get your PROOF score</li>
+          <li>See top 3 improvements</li>
+          <li>Basic viral tracker</li>
+        </ul>
+        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px" onclick="showView('analyze')">Get Started Free</button>
+      </div>
+      <div class="price-card featured">
+        <div class="price-tier text-indigo">Pro</div>
+        <div class="price-amount">1,000</div>
+        <div class="price-sub">$PROOF TOKENS REQUIRED</div>
+        <ul class="price-features">
+          <li>Full post grader with feedback</li>
+          <li>Hook rewriter — 3 rewrites</li>
+          <li>Optimal posting times</li>
+          <li>Full viral tracker</li>
+          <li>Growth leaderboard access</li>
+        </ul>
+        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px">Unlock with $PROOF</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tier text-purple">Elite</div>
+        <div class="price-amount">10,000</div>
+        <div class="price-sub">$PROOF TOKENS REQUIRED</div>
+        <ul class="price-features">
+          <li>Everything in Pro</li>
+          <li>Weekly 1-on-1 action plan</li>
+          <li>Growth alerts</li>
+          <li>Early feature access</li>
+          <li>Priority leaderboard</li>
+        </ul>
+        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px;background:linear-gradient(135deg,#a855f7,#ec4899)">Unlock Elite</button>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- SOCIAL PROOF -->
+  <section class="section">
+    <div class="social-proof-bar">
+      <div class="proof-stat">
+        <div class="proof-stat-num">2,847</div>
+        <div class="proof-stat-label">Accounts Connected</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">340%</div>
+        <div class="proof-stat-label">Average Faster Growth</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">+1,200</div>
+        <div class="proof-stat-label">Top Account This Week</div>
+      </div>
+      <div class="proof-stat">
+        <div class="proof-stat-num">89</div>
+        <div class="proof-stat-label">100+ Follower Weeks</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a class="footer-link" href="https://x.com" target="_blank">𝕏 Twitter</a>
+      <a class="footer-link" href="#" target="_blank">Telegram</a>
+      <button class="btn-primary" style="font-size:13px;padding:8px 18px">Buy $PROOF</button>
+    </div>
+    <div class="footer-tagline">Built for CT. Powered by $PROOF.</div>
+  </footer>
+
+</div><!-- /view-landing -->
+
+
+<!-- ============================================
+     VIEW 2: ANALYZE
+     ============================================ -->
+<div class="view" id="view-analyze">
+  <div class="analyze-wrap">
+
+    <!-- STEP 1 FORM -->
+    <div id="analyze-form">
+      <div class="analyze-step">
+        <div class="x-logo">𝕏</div>
+        <div class="analyze-title">Analyze My Account</div>
+        <div class="analyze-sub">Enter your handle and we'll grade your last 10 posts instantly</div>
+        <div class="input-group">
+          <label class="input-label">X Handle</label>
+          <input type="text" class="input-field" id="x-handle" placeholder="@0liverVera" />
+        </div>
+        <div class="input-group">
+          <label class="input-label">$PROOF Balance (optional — unlock tier bonuses)</label>
+          <input type="number" class="input-field" id="proof-balance" placeholder="0" />
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:8px;font-size:16px;padding:16px" onclick="runAnalysis()">Run Analysis →</button>
+      </div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="analyze-loading" class="analyze-step" style="display:none">
+      <div class="loading-spinner"></div>
+      <div id="ls1" class="loading-step">Scanning your last 10 posts...</div>
+      <div id="ls2" class="loading-step">Analyzing hook strength...</div>
+      <div id="ls3" class="loading-step">Calculating growth velocity...</div>
+      <div id="ls4" class="loading-step">Generating your PROOF Score...</div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard">
+      <div class="dashboard-header">
+        <div class="dashboard-handle" id="db-handle">@username</div>
+        <div class="dashboard-title">Your PROOF Score Dashboard</div>
+        <div id="db-tier-badge" style="margin-top:8px"></div>
+      </div>
+
+      <!-- SCORE CIRCLE -->
+      <div class="score-big-wrap">
+        <svg class="score-big-svg" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="bigScoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#a855f7"/>
+            </linearGradient>
+          </defs>
+          <circle class="score-big-circle-bg" cx="100" cy="100" r="90"/>
+          <circle class="score-big-circle-fill" id="big-score-fill" cx="100" cy="100" r="90"/>
+        </svg>
+        <div class="score-big-center">
+          <div class="score-big-num" id="big-score-num">0</div>
+          <div class="score-big-label">PROOF SCORE</div>
+        </div>
+      </div>
+
+      <!-- METRICS -->
+      <div class="metrics-section">
+        <h3>Score Breakdown</h3>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Hook Strength</span><span class="metric-score" id="db-m1">0/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="db-bar1"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Engagement Mechanics</span><span class="metric-score" id="db-m2">0/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="db-bar2"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Timing Optimization</span><span class="metric-score" id="db-m3">0/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="db-bar3"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Topic Relevance</span><span class="metric-score" id="db-m4">0/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="db-bar4"></div></div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-header"><span class="metric-name">Format & Structure</span><span class="metric-score" id="db-m5">0/20</span></div>
+          <div class="metric-bar-track"><div class="metric-bar-fill" id="db-bar5"></div></div>
+        </div>
+      </div>
+
+      <!-- PROBLEMS -->
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+        <span>⚠️</span> Your Top 3 Problems
+      </div>
+      <div class="problems-grid" id="problems-container"></div>
+
+      <!-- ACTION PLAN -->
+      <div class="action-plan">
+        <h3>📅 Your 7-Day Action Plan</h3>
+        <div id="action-plan-days"></div>
+      </div>
+
+      <!-- SHARE -->
+      <div class="share-section">
+        <button class="btn-share" id="share-btn" onclick="shareScore()">Share My PROOF Score on 𝕏</button>
+        <div style="font-size:13px;color:var(--gray)">Challenge your mutuals. Who can beat your score?</div>
+      </div>
+
+      <!-- UPGRADE -->
+      <div class="upgrade-prompt">
+        <h3>Want Your Full Analysis?</h3>
+        <p>Unlock the full post grader, hook rewriter, timing optimizer, and weekly 1-on-1 action plan with $PROOF tokens.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-primary" style="font-size:14px;padding:12px 24px">Unlock Pro — 1,000 $PROOF</button>
+          <button class="btn-primary" style="font-size:14px;padding:12px 24px;background:linear-gradient(135deg,#a855f7,#ec4899)">Unlock Elite — 10,000 $PROOF</button>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn-secondary" style="font-size:14px" onclick="resetAnalysis()">← Analyze Another Account</button>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /view-analyze -->
+
+
+<!-- ============================================
+     VIEW 3: POST GRADER
+     ============================================ -->
+<div class="view" id="view-grader">
+  <div class="grader-wrap">
+    <div class="view-title">Grade My Tweet</div>
+    <div class="view-sub">Paste your tweet before posting and get an instant score with line-by-line feedback</div>
+
+    <div class="tweet-input-wrap">
+      <textarea class="tweet-textarea" id="tweet-input" placeholder="Paste your tweet here before you post it..." oninput="updateCharCount()"></textarea>
+      <div class="char-counter" id="char-count">0 / 280</div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-bottom:32px;flex-wrap:wrap">
+      <button class="btn-primary" style="flex:1;padding:14px;min-width:180px" onclick="gradeTweet()">Grade This Tweet →</button>
+      <button class="btn-secondary" style="padding:14px 20px;font-size:14px" onclick="clearGrader()">Clear</button>
+    </div>
+
+    <!-- GRADE RESULT -->
+    <div class="grade-result" id="grade-result">
+
+      <!-- GRADE LOADING -->
+      <div id="grade-loading" style="text-align:center;padding:40px;display:none">
+        <div class="loading-spinner" style="margin:0 auto 16px"></div>
+        <div style="font-size:14px;color:var(--gray);font-family:'JetBrains Mono',monospace">Analyzing your tweet...</div>
+      </div>
+
+      <div id="grade-content" style="display:none">
+        <!-- OVERVIEW -->
+        <div class="grade-overview">
+          <div class="grade-circle-wrap">
+            <svg class="grade-svg" viewBox="0 0 120 120">
+              <defs>
+                <linearGradient id="gradeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#6366f1"/>
+                  <stop offset="100%" stop-color="#a855f7"/>
+                </linearGradient>
+              </defs>
+              <circle class="grade-bg" cx="60" cy="60" r="52"/>
+              <circle class="grade-fill" id="grade-circle" cx="60" cy="60" r="52"/>
+            </svg>
+            <div class="grade-center">
+              <div class="grade-num" id="grade-score-num">0</div>
+              <div class="grade-out">/100</div>
+            </div>
+          </div>
+          <div class="grade-details">
+            <h3 id="grade-verdict">Analyzing...</h3>
+            <div id="grade-sub-metrics"></div>
+          </div>
+        </div>
+
+        <!-- BREAKDOWN -->
+        <div class="grade-breakdown">
+          <h3>Line-by-Line Feedback</h3>
+          <div id="grade-feedback"></div>
+        </div>
+
+        <!-- REWRITE -->
+        <div class="rewrite-box">
+          <h3>✨ Rewritten Version</h3>
+          <div class="sub">Here's your tweet improved for maximum engagement</div>
+          <div class="rewrite-text" id="rewrite-text"></div>
+          <button class="btn-copy" onclick="copyRewrite()">Copy Improved Version</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOOK GENERATOR -->
+    <div class="hook-gen">
+      <h3>🪝 Hook Generator</h3>
+      <p>Enter your topic and get 5 battle-tested hook templates instantly</p>
+      <div class="hook-input-row">
+        <input type="text" class="input-field" id="hook-topic" placeholder="e.g. AI agents, Bitcoin, prediction markets..." />
+        <button class="btn-primary" style="padding:14px 24px;white-space:nowrap" onclick="generateHooks()">Generate Hooks</button>
+      </div>
+      <div class="hooks-list" id="hooks-list"></div>
+    </div>
+
+  </div>
+</div><!-- /view-grader -->
+
+
+<!-- ============================================
+     VIEW 4: VIRAL TRACKER
+     ============================================ -->
+<div class="view" id="view-tracker">
+  <div class="tracker-wrap">
+    <div class="view-title">What's Popping On CT Right Now</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:32px">
+      <div class="view-sub" style="margin-bottom:0">Updated every hour. These are the topics gaining momentum fastest.</div>
+      <div class="pulse-dot" style="flex-shrink:0"></div>
+    </div>
+
+    <div class="topics-grid" id="topics-grid"></div>
+
+    <!-- MOMENTUM CHART -->
+    <div class="momentum-chart">
+      <h3>📊 Momentum Chart</h3>
+      <div class="chart-bars" id="chart-bars"></div>
+      <div class="updated-time" id="updated-time"></div>
+    </div>
+
+  </div>
+</div><!-- /view-tracker -->
+
+
+<!-- ============================================
+     VIEW 5: LEADERBOARD
+     ============================================ -->
+<div class="view" id="view-leaderboard">
+  <div class="lb-wrap">
+    <div class="view-title">Fastest Growing Accounts This Week</div>
+    <div class="view-sub">Public ranking of accounts using PROOF. Resets every Sunday.</div>
+
+    <div class="prize-banner">
+      <div class="prize-text">
+        🥇 <strong>500 $PROOF</strong> — 🥈 <strong>250 $PROOF</strong> — 🥉 <strong>100 $PROOF</strong> — 🎲 Random raider <strong>50 $PROOF</strong><br>
+        <span style="font-size:12px;color:var(--gray)">Prizes sent every Sunday to connected wallets</span>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--gray);font-family:'JetBrains Mono',monospace;text-align:center;margin-bottom:4px">RESETS IN</div>
+        <div class="countdown" id="countdown">00<span>:</span>00<span>:</span>00</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="lb-tabs">
+        <button class="lb-tab active" onclick="switchLBTab(this,'week')" data-tab="week">This Week</button>
+        <button class="lb-tab" onclick="switchLBTab(this,'alltime')" data-tab="alltime">All Time</button>
+      </div>
+    </div>
+
+    <div class="lb-table" id="lb-table">
+      <div class="lb-header">
+        <div>#</div>
+        <div>Handle</div>
+        <div style="text-align:center">Score</div>
+        <div style="text-align:center">Gained</div>
+        <div style="text-align:center">Posts</div>
+        <div style="text-align:center">Tier</div>
+      </div>
+      <div id="lb-rows"></div>
+    </div>
+
+    <div class="my-rank-card" id="my-rank-section" style="display:none">
+      <h3>📍 Your Rank</h3>
+      <div class="my-rank-row">
+        <div class="my-rank-stat">
+          <div class="my-rank-num" id="my-rank-num">#--</div>
+          <div class="my-rank-label">Current Rank</div>
+        </div>
+        <div class="my-rank-stat">
+          <div class="my-rank-num" id="my-gained">+0</div>
+          <div class="my-rank-label">Followers Gained</div>
+        </div>
+        <div class="my-rank-stat">
+          <div class="my-rank-num" id="my-proof-score">--</div>
+          <div class="my-rank-label">PROOF Score</div>
+        </div>
+      </div>
+      <div class="progress-to-next">
+        <div class="progress-label">
+          <span id="progress-label-text">Progress to next rank</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px">
+      <button class="btn-secondary" onclick="shareLBRank()">📤 Share My Rank</button>
+    </div>
+
+  </div>
+</div><!-- /view-leaderboard -->
+
+
+<!-- SVG DEFS (global) -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden">
+  <defs>
+    <linearGradient id="globalGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+
+<script>
+// =============================================
+// STATE
+// =============================================
+let state = {
+  user: null,
+  proofScore: null,
+  currentView: 'landing',
+  leaderboardTab: 'week'
+};
+
+// Load from localStorage
+const saved = localStorage.getItem('proof_user');
+if (saved) {
+  state.user = JSON.parse(saved);
+  updateNavUser();
+}
+
+// =============================================
+// NAVIGATION
+// =============================================
+function showView(name) {
+  const views = document.querySelectorAll('.view');
+  views.forEach(v => {
+    v.classList.remove('active','fade-in');
+    v.style.display = '';
+  });
+
+  const target = document.getElementById('view-' + name);
+  if (!target) return;
+
+  target.style.display = 'block';
+  requestAnimationFrame(() => {
+    target.classList.add('active','fade-in');
+  });
+
+  state.currentView = name;
+
+  // Update nav links
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.classList.toggle('active', l.dataset.view === name);
+  });
+
+  // Init view specific things
+  if (name === 'landing') initLandingAnimations();
+  if (name === 'tracker') initTracker();
+  if (name === 'leaderboard') initLeaderboard();
+  if (name === 'analyze') {
+    // reset if needed
+  }
+}
+
+function toggleMobile() {
+  const m = document.getElementById('mobile-menu');
+  m.classList.toggle('open');
+}
+
+function closeMobile() {
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+function updateNavUser() {
+  if (!state.user) return;
+  document.getElementById('nav-user').style.display = 'flex';
+  document.getElementById('nav-connect-btn').style.display = 'none';
+  document.getElementById('nav-handle').textContent = state.user.handle;
+  const badge = document.getElementById('nav-tier');
+  const bal = parseInt(state.user.balance) || 0;
+  if (bal >= 10000) {
+    badge.textContent = 'ELITE';
+    badge.className = 'tier-badge tier-elite';
+  } else if (bal >= 1000) {
+    badge.textContent = 'PRO';
+    badge.className = 'tier-badge tier-pro';
+  } else {
+    badge.textContent = 'FREE';
+    badge.className = 'tier-badge tier-free';
+  }
+}
+
+// =============================================
+// LANDING ANIMATIONS
+// =============================================
+function initLandingAnimations() {
+  // Intersection observer for score explainer
+  const explainer = document.getElementById('score-explainer');
+  if (!explainer) return;
+
+  const scores = [15, 14, 16, 13, 15];
+  const total = scores.reduce((a,b)=>a+b,0);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateLandingScore(total, scores);
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(explainer);
+}
+
+function animateLandingScore(total, scores) {
+  // Animate circle
+  const fill = document.getElementById('landing-score-fill');
+  const circumference = 440;
+  const dashoffset = circumference - (total / 100) * circumference;
+  fill.style.strokeDashoffset = dashoffset;
+
+  // Count up number
+  countUp(document.getElementById('landing-score-num'), 0, total, 1500);
+
+  // Animate bars
+  const bars = ['m1','m2','m3','m4','m5'];
+  scores.forEach((s, i) => {
+    const bar = document.getElementById(bars[i] + '-bar');
+    const label = document.getElementById(bars[i] + '-score');
+    if (bar) {
+      setTimeout(() => {
+        bar.style.width = (s / 20 * 100) + '%';
+      }, i * 100);
+    }
+    if (label) label.textContent = s + '/20';
+  });
+}
+
+// =============================================
+// ANALYZE FLOW
+// =============================================
+function runAnalysis() {
+  const handle = document.getElementById('x-handle').value.trim() || '@anon';
+  const balance = document.getElementById('proof-balance').value || '0';
+
+  // Save user
+  state.user = {
+    handle: handle.startsWith('@') ? handle : '@' + handle,
+    balance: balance
+  };
+  localStorage.setItem('proof_user', JSON.stringify(state.user));
+  updateNavUser();
+
+  // Show loading
+  document.getElementById('analyze-form').style.display = 'none';
+  const loading = document.getElementById('analyze-loading');
+  loading.style.display = 'block';
+
+  const steps = ['ls1','ls2','ls3','ls4'];
+  steps.forEach((id, i) => {
+    setTimeout(() => {
+      // Previous steps go done
+      if (i > 0) {
+        document.getElementById(steps[i-1]).classList.remove('visible');
+        document.getElementById(steps[i-1]).classList.add('done');
+        document.getElementById(steps[i-1]).textContent = '✓ ' + document.getElementById(steps[i-1]).textContent.replace('✓ ','');
+      }
+      document.getElementById(id).classList.add('visible');
+    }, i * 600);
+  });
+
+  setTimeout(() => {
+    loading.style.display = 'none';
+    showDashboard();
+  }, 2800);
+}
+
+function showDashboard() {
+  // Generate random score 45-78
+  const score = Math.floor(Math.random() * 34) + 45;
+  state.proofScore = score;
+
+  // Generate metric scores that sum to score
+  const metrics = generateMetrics(score);
+
+  // Show dashboard
+  const db = document.getElementById('dashboard');
+  db.classList.add('active');
+  db.style.display = 'block';
+
+  // Handle
+  document.getElementById('db-handle').textContent = state.user.handle;
+
+  // Tier badge
+  const bal = parseInt(state.user.balance) || 0;
+  const tierEl = document.getElementById('db-tier-badge');
+  if (bal >= 10000) {
+    tierEl.innerHTML = '<span class="tier-badge tier-elite">⚡ ELITE</span>';
+  } else if (bal >= 1000) {
+    tierEl.innerHTML = '<span class="tier-badge tier-pro">✦ PRO</span>';
+  } else {
+    tierEl.innerHTML = '<span class="tier-badge tier-free">FREE</span>';
+  }
+
+  // Animate big score circle
+  setTimeout(() => {
+    const fill = document.getElementById('big-score-fill');
+    const circumference = 565;
+    const dashoffset = circumference - (score / 100) * circumference;
+
+    // Color based on score
+    let color1, color2;
+    if (score < 40) { color1 = '#ef4444'; color2 = '#dc2626'; }
+    else if (score < 60) { color1 = '#f97316'; color2 = '#ea580c'; }
+    else if (score < 75) { color1 = '#f59e0b'; color2 = '#d97706'; }
+    else { color1 = '#10b981'; color2 = '#059669'; }
+
+    fill.style.stroke = `url(#bigScoreGrad)`;
+    fill.style.strokeDashoffset = dashoffset;
+
+    countUp(document.getElementById('big-score-num'), 0, score, 2000);
+
+    // Metric bars
+    const mNames = ['db-m1','db-m2','db-m3','db-m4','db-m5'];
+    const bNames = ['db-bar1','db-bar2','db-bar3','db-bar4','db-bar5'];
+    metrics.forEach((m, i) => {
+      setTimeout(() => {
+        document.getElementById(mNames[i]).textContent = m + '/20';
+        document.getElementById(bNames[i]).style.width = (m / 20 * 100) + '%';
+      }, i * 150 + 300);
+    });
+
+    // Confetti if score > 70
+    if (score > 70) {
+      setTimeout(fireConfetti, 1500);
+    }
+
+  }, 100);
+
+  // Populate problems
+  populateProblems();
+
+  // Populate action plan
+  populateActionPlan();
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function generateMetrics(total) {
+  // Generate 5 metrics that sum to total
+  let remaining = total;
+  const result = [];
+  for (let i = 0; i < 5; i++) {
+    if (i === 4) {
+      result.push(Math.max(0, Math.min(20, remaining)));
+    } else {
+      const avg = remaining / (5 - i);
+      const val = Math.round(avg + (Math.random() - 0.5) * 6);
+      const clamped = Math.max(0, Math.min(20, val));
+      result.push(clamped);
+      remaining -= clamped;
+    }
+  }
+  return result;
+}
+
+const PROBLEMS = [
+  {
+    id: 'A',
+    title: 'Your hooks are killing your reach',
+    desc: 'The first line of your tweet determines if anyone reads the rest. Right now your hooks start with statements instead of questions or bold claims. Rewrite your first line to create immediate curiosity or controversy.'
+  },
+  {
+    id: 'B',
+    title: 'You are posting at the wrong time',
+    desc: 'CT has peak engagement windows and you are missing them. Most of your posts go out when your target audience is offline. Shift your posting to 8am EST, 12pm EST, and 7pm EST for 3x more impressions.'
+  },
+  {
+    id: 'C',
+    title: 'Your topics are not trending',
+    desc: 'You are talking about things people stopped caring about. Right now the hottest topics on CT are AI agents, tariffs impact on crypto, and prediction markets. Pivot one post per day to these topics for the next 7 days.'
+  },
+  {
+    id: 'D',
+    title: 'No engagement mechanics in your posts',
+    desc: 'You never ask questions, never do polls, never ask people to reply. Add one engagement mechanic to every post — a question at the end, a fill in the blank, or a hot take that forces people to agree or disagree.'
+  },
+  {
+    id: 'E',
+    title: 'Your profile is not converting viewers to followers',
+    desc: 'People visit your profile after seeing a post and decide in 3 seconds whether to follow. Your bio does not explain who you are, what you post about, and why someone should follow you. Fix your bio first before anything else.'
+  },
+  {
+    id: 'F',
+    title: 'You are not being consistent enough',
+    desc: 'The algorithm rewards accounts that post at least once per day. Your posting schedule is irregular. Set a minimum of 1 post per day and 5 quality replies per day for 30 days straight and you will see the algorithm push your content.'
+  }
+];
+
+function populateProblems() {
+  const shuffled = [...PROBLEMS].sort(() => Math.random() - 0.5);
+  const selected = shuffled.slice(0, 3);
+
+  const container = document.getElementById('problems-container');
+  container.innerHTML = '';
+
+  selected.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'problem-card';
+    card.innerHTML = `
+      <div class="problem-icon">🚨</div>
+      <div class="problem-content">
+        <h4>${p.title}</h4>
+        <p>${p.desc}</p>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Store first problem for share button
+  state.topProblem = selected[0].title;
+}
+
+const ACTION_DAYS = [
+  "Rewrite your bio using this formula: [what you do] + [who you help] + [proof or credibility] + [what they get from following you]",
+  "Post a hot take about your niche. Start with 'Unpopular opinion:' and take a strong stance. Reply to every comment within 1 hour.",
+  "Find the 5 biggest accounts in your niche. Reply to their next 3 posts with genuine insight — not just 'great post'. Write replies that could stand alone as tweets.",
+  "Post a list tweet. '5 things I learned about [your topic] that nobody talks about:' — numbered list format, each point on its own line.",
+  "Post at exactly 8am EST today. Track impressions at 1 hour vs your normal posting time. Screenshot the difference.",
+  "Do a thread. Minimum 5 tweets. Tell a story about a mistake you made and what you learned. Personal threads get 10x more engagement than opinion threads.",
+  "Post your PROOF Score and tag someone to challenge them to beat it. Use the share button below."
+];
+
+function populateActionPlan() {
+  const container = document.getElementById('action-plan-days');
+  container.innerHTML = '';
+  ACTION_DAYS.forEach((task, i) => {
+    const div = document.createElement('div');
+    div.className = 'action-day';
+    div.innerHTML = `
+      <div class="day-badge">D${i+1}</div>
+      <div class="action-text">${task}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function resetAnalysis() {
+  document.getElementById('analyze-form').style.display = 'block';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('dashboard').classList.remove('active');
+  document.getElementById('analyze-loading').style.display = 'none';
+
+  // Reset loading steps
+  ['ls1','ls2','ls3','ls4'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('visible','done');
+    el.textContent = el.textContent.replace('✓ ','');
+  });
+}
+
+function shareScore() {
+  const score = state.proofScore || '--';
+  const problem = state.topProblem || 'weak hooks';
+  const text = `Just ran my X account through PROOF and scored ${score}/100.\n\nMy biggest problem is "${problem}"\n\nWorking on fixing it this week. What is your score?\n\nproof.app $PROOF`;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+}
+
+// =============================================
+// POST GRADER
+// =============================================
+function updateCharCount() {
+  const text = document.getElementById('tweet-input').value;
+  const len = text.length;
+  const counter = document.getElementById('char-count');
+  counter.textContent = len + ' / 280';
+  counter.className = 'char-counter';
+  if (len > 260) counter.classList.add('danger');
+  else if (len > 200) counter.classList.add('warning');
+}
+
+function clearGrader() {
+  document.getElementById('tweet-input').value = '';
+  document.getElementById('char-count').textContent = '0 / 280';
+  document.getElementById('grade-result').classList.remove('active');
+  document.getElementById('grade-loading').style.display = 'none';
+  document.getElementById('grade-content').style.display = 'none';
+}
+
+function gradeTweet() {
+  const text = document.getElementById('tweet-input').value.trim();
+  if (!text) {
+    showToast('Paste a tweet first!', '⚠️', 'info');
+    return;
+  }
+
+  const result = document.getElementById('grade-result');
+  result.classList.add('active');
+
+  document.getElementById('grade-content').style.display = 'none';
+  document.getElementById('grade-loading').style.display = 'block';
+
+  setTimeout(() => {
+    document.getElementById('grade-loading').style.display = 'none';
+    document.getElementById('grade-content').style.display = 'block';
+    computeGrade(text);
+  }, 2000);
+}
+
+function computeGrade(text) {
+  const len = text.length;
+  const words = text.split(/\s+/).length;
+  const hasQuestion = text.includes('?');
+  const hasExcl = text.includes('!');
+  const hasColon = text.includes(':');
+  const hasNumber = /\d/.test(text);
+  const hasThread = text.toLowerCase().includes('thread') || text.includes('🧵');
+
+  // Simulate smart scoring
+  let hookScore = 15;
+  let engageScore = 15;
+  let clarityScore = 15;
+  let viralScore = 15;
+
+  // Hook scoring
+  if (len < 30) hookScore -= 5;
+  if (hasColon || hasQuestion) hookScore += 3;
+  if (text.startsWith('Hot take') || text.startsWith('Unpopular') || text.startsWith('Thread')) hookScore += 2;
+  hookScore = Math.min(25, Math.max(5, hookScore));
+
+  // Engagement
+  if (hasQuestion) engageScore += 4;
+  if (text.toLowerCase().includes('reply') || text.toLowerCase().includes('comment')) engageScore += 2;
+  if (text.toLowerCase().includes('poll')) engageScore += 3;
+  engageScore = Math.min(25, Math.max(5, engageScore));
+
+  // Clarity
+  if (words < 5) clarityScore -= 5;
+  if (words > 50) clarityScore -= 3;
+  if (hasNumber) clarityScore += 2;
+  clarityScore = Math.min(25, Math.max(5, clarityScore));
+
+  // Viral
+  if (hasThread) viralScore += 5;
+  if (hasExcl) viralScore += 2;
+  if (len > 100 && len < 200) viralScore += 3;
+  viralScore = Math.min(25, Math.max(5, viralScore));
+
+  const total = hookScore + engageScore + clarityScore + viralScore;
+
+  // Animate circle
+  const fill = document.getElementById('grade-circle');
+  const circumference = 330;
+  const dashoffset = circumference - (total / 100) * circumference;
+  fill.style.strokeDashoffset = dashoffset;
+  countUp(document.getElementById('grade-score-num'), 0, total, 1200);
+
+  // Verdict
+  let verdict = '';
+  if (total >= 80) verdict = '🔥 This tweet will pop off';
+  else if (total >= 65) verdict = '📈 Solid tweet with upside';
+  else if (total >= 50) verdict = '⚠️ Decent but needs work';
+  else verdict = '🚨 This tweet needs a rewrite';
+
+  document.getElementById('grade-verdict').textContent = verdict;
+
+  // Sub metrics
+  const sub = document.getElementById('grade-sub-metrics');
+  const mData = [
+    { name: 'Hook Score', val: hookScore, max: 25 },
+    { name: 'Engagement', val: engageScore, max: 25 },
+    { name: 'Clarity', val: clarityScore, max: 25 },
+    { name: 'Viral Potential', val: viralScore, max: 25 }
+  ];
+
+  sub.innerHTML = mData.map(m => `
+    <div class="metric-row" style="margin-bottom:8px">
+      <div class="metric-header">
+        <span class="metric-name" style="font-size:12px">${m.name}</span>
+        <span class="metric-score">${m.val}/${m.max}</span>
+      </div>
+      <div class="metric-bar-track">
+        <div class="metric-bar-fill" style="width:${m.val/m.max*100}%;transition:width 1s ease ${mData.indexOf(m)*0.1}s"></div>
+      </div>
+    </div>
+  `).join('');
+
+  // Feedback
+  const feedback = document.getElementById('grade-feedback');
+  const lines = text.split('\n').filter(l => l.trim());
+  if (lines.length === 0) lines.push(text);
+
+  const feedbacks = [
+    { label: 'HOOK (First Line)', text: lines[0] || text.slice(0,60), note: hookScore >= 20 ? '✅ Strong hook that grabs attention' : hookScore >= 15 ? '⚠️ Hook could be more compelling — try opening with a bold claim or question' : '❌ Weak hook — rewrite this line to create immediate curiosity' },
+    { label: 'ENGAGEMENT MECHANICS', text: hasQuestion ? '✅ Question detected' : '❌ No question or call to action found', note: hasQuestion ? 'Great — questions drive replies and boost algorithmic reach' : 'Add a question at the end to trigger replies and engagement' },
+    { label: 'FORMAT CHECK', text: len + ' characters, ' + words + ' words', note: len > 180 ? '⚠️ Slightly long — consider trimming for more punch' : len < 40 ? '⚠️ Very short — add more context or a question' : '✅ Good length for engagement' },
+    { label: 'VIRAL SIGNALS', text: hasThread ? '✅ Thread format detected' : hasNumber ? '✅ Numbers detected (boosts credibility)' : '⚠️ No viral signals found', note: hasThread ? 'Threads get 10x more engagement when first tweet is strong' : hasNumber ? 'Numbers increase click-through rate significantly' : 'Consider adding a number, a bold claim, or a thread' }
+  ];
+
+  feedback.innerHTML = feedbacks.map(f => `
+    <div class="breakdown-item">
+      <div class="breakdown-label">${f.label}</div>
+      <div class="breakdown-text">${f.text}</div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:4px">${f.note}</div>
+    </div>
+  `).join('');
+
+  // Rewrite
+  const rewriteTemplates = [
+    `🔥 Hot take: ${text.slice(0,40).replace(/^[^a-zA-Z]*/,'').trim()}...\n\nHere's what most people miss:\n\n→ Point 1\n→ Point 2\n→ Point 3\n\nSave this thread. You'll thank me later.`,
+    `${hasQuestion ? text : 'What if everything you knew about this was wrong?\n\n' + text.slice(0,80).trim() + '...'}\n\nReply with your take 👇`,
+    `Unpopular opinion: ${text.slice(0,60).replace(/^[^a-zA-Z]*/,'').trim()}...\n\nThread on why 🧵`
+  ];
+
+  const rewrite = rewriteTemplates[Math.floor(Math.random() * rewriteTemplates.length)];
+  document.getElementById('rewrite-text').textContent = rewrite;
+}
+
+function copyRewrite() {
+  const text = document.getElementById('rewrite-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Rewritten tweet copied!', '✅', 'success');
+  });
+}
+
+function generateHooks() {
+  const topic = document.getElementById('hook-topic').value.trim();
+  if (!topic) {
+    showToast('Enter a topic first!', '⚠️', 'info');
+    return;
+  }
+
+  const templates = [
+    `Everyone is wrong about ${topic}`,
+    `I spent 6 months learning ${topic} and here is what nobody tells you:`,
+    `Hot take: ${topic} is the most underrated thing in crypto right now`,
+    `The ${topic} playbook that got me from 0 to 10,000 followers:`,
+    `Why smart people are quietly betting everything on ${topic}:`
+  ];
+
+  const list = document.getElementById('hooks-list');
+  list.innerHTML = '';
+  list.classList.add('active');
+
+  templates.forEach(hook => {
+    const item = document.createElement('div');
+    item.className = 'hook-item';
+    item.innerHTML = `
+      <div class="hook-text">${hook}</div>
+      <button class="btn-copy" style="white-space:nowrap;flex-shrink:0" onclick="copyHook(this, '${hook.replace(/'/g,"\\'")}')">Copy</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function copyHook(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+    showToast('Hook copied to clipboard', '✅', 'success');
+  });
+}
+
+// =============================================
+// VIRAL TRACKER
+// =============================================
+const TOPICS = [
+  { name: 'AI Agents', momentum: 94, posts: 2847, arrow: '🔴', hook: 'AI agents are about to make 90% of crypto traders obsolete. Here is why:', badge: 'momentum-hot' },
+  { name: 'Trump Tariffs × Crypto', momentum: 89, posts: 3102, arrow: '🔴', hook: 'Every tariff announcement is a buying signal if you know where to look. Thread:', badge: 'momentum-hot' },
+  { name: 'Prediction Markets', momentum: 81, posts: 1456, arrow: '🔴', hook: 'Prediction markets are the most underrated alpha source in crypto right now.', badge: 'momentum-hot' },
+  { name: 'Solana Season', momentum: 76, posts: 2203, arrow: '🟡', hook: 'Solana is doing something it has never done before. Pay attention.', badge: 'momentum-warm' },
+  { name: 'Copy Trading', momentum: 71, posts: 987, arrow: '🟡', hook: 'I copied a top Polymarket trader for 30 days. Here is exactly what happened:', badge: 'momentum-warm' },
+  { name: 'Bitcoin to 250k', momentum: 68, posts: 1834, arrow: '🟡', hook: 'ARK just said Bitcoin hits 250k this cycle. Here is the math:', badge: 'momentum-warm' },
+  { name: 'Memecoins vs Altcoins', momentum: 61, posts: 743, arrow: '🔵', hook: 'Stop buying altcoins. Here is why memecoins are outperforming every L1 this cycle:', badge: 'momentum-cool' },
+  { name: 'X Algorithm Changes', momentum: 58, posts: 612, arrow: '🔵', hook: 'The X algorithm just changed and most creators have no idea. Here is what is different:', badge: 'momentum-cool' }
+];
+
+function initTracker() {
+  const grid = document.getElementById('topics-grid');
+  grid.innerHTML = '';
+
+  TOPICS.forEach((t, i) => {
+    const card = document.createElement('div');
+    card.className = 'topic-card';
+    card.innerHTML = `
+      <div class="topic-header">
+        <div class="topic-name">${t.name}</div>
+        <div class="momentum-badge ${t.badge}">${t.momentum}%</div>
+      </div>
+      <div class="topic-posts">${t.posts.toLocaleString()} posts last hour</div>
+      <div class="topic-bar-track"><div class="topic-bar-fill" id="tb-${i}" style="width:0"></div></div>
+      <div class="topic-hook">"${t.hook}"</div>
+      <button class="btn-copy" style="font-size:11px;padding:6px 12px" onclick="copyTopicHook('${t.hook.replace(/'/g,"\\'")}')">Use This Hook</button>
+    `;
+    grid.appendChild(card);
+
+    setTimeout(() => {
+      document.getElementById('tb-' + i).style.width = t.momentum + '%';
+    }, i * 80 + 100);
+  });
+
+  // Chart
+  buildMomentumChart();
+
+  // Updated time
+  document.getElementById('updated-time').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+}
+
+function copyTopicHook(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Hook copied! Go post it now. 🔥', '✅', 'success');
+  });
+}
+
+function buildMomentumChart() {
+  const bars = document.getElementById('chart-bars');
+  bars.innerHTML = '';
+
+  const max = Math.max(...TOPICS.map(t => t.momentum));
+
+  TOPICS.forEach((t, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'chart-bar-wrap';
+
+    const pct = Math.round((t.momentum / max) * 100);
+    const shortName = t.name.length > 10 ? t.name.slice(0,10) + '…' : t.name;
+
+    wrap.innerHTML = `
+      <div class="chart-bar-pct">${t.momentum}%</div>
+      <div class="chart-bar" id="cb-${i}" style="height:0"></div>
+      <div class="chart-bar-label">${shortName}</div>
+    `;
+    bars.appendChild(wrap);
+
+    setTimeout(() => {
+      document.getElementById('cb-' + i).style.height = (pct * 1.2) + 'px';
+    }, i * 80 + 200);
+  });
+}
+
+// =============================================
+// LEADERBOARD
+// =============================================
+const LB_DATA_WEEK = [
+  { handle: 'sol_maxi_99', score: 82, gained: 1247, posts: 23, tier: 'elite' },
+  { handle: 'cryptooli', score: 79, gained: 987, posts: 19, tier: 'pro' },
+  { handle: 'predmarket_chad', score: 77, gained: 834, posts: 31, tier: 'elite' },
+  { handle: 'defidegen42', score: 74, gained: 712, posts: 28, tier: 'pro' },
+  { handle: 'agentswatcher', score: 72, gained: 634, posts: 14, tier: 'pro' },
+  { handle: 'ct_alpha_daily', score: 71, gained: 589, posts: 22, tier: 'elite' },
+  { handle: 'memecoin_lord', score: 69, gained: 534, posts: 41, tier: 'free' },
+  { handle: 'btc_thesis_guy', score: 68, gained: 478, posts: 17, tier: 'pro' },
+  { handle: 'defi_explorer', score: 66, gained: 423, posts: 29, tier: 'pro' },
+  { handle: 'solflare_trader', score: 65, gained: 391, posts: 12, tier: 'free' },
+  { handle: 'nfa_alpha_inc', score: 63, gained: 356, posts: 24, tier: 'pro' },
+  { handle: 'polymarket_bet', score: 62, gained: 334, posts: 18, tier: 'elite' },
+  { handle: 'ct_threads_bro', score: 61, gained: 312, posts: 35, tier: 'free' },
+  { handle: 'whale_watcher_x', score: 60, gained: 289, posts: 21, tier: 'pro' },
+  { handle: 'onchain_signal', score: 58, gained: 267, posts: 16, tier: 'pro' },
+  { handle: 'alpha_morning_ct', score: 57, gained: 245, posts: 27, tier: 'free' },
+  { handle: 'eth_rebound_guy', score: 55, gained: 223, posts: 33, tier: 'free' },
+  { handle: 'copytrader_pro', score: 54, gained: 201, posts: 19, tier: 'pro' },
+  { handle: 'layerzero_bull', score: 52, gained: 178, posts: 14, tier: 'free' },
+  { handle: 'airdrop_hunter9', score: 51, gained: 156, posts: 22, tier: 'free' }
+];
+
+const MEDALS = ['🥇','🥈','🥉'];
+
+function initLeaderboard() {
+  renderLBTable(LB_DATA_WEEK);
+  startCountdown();
+  updateMyRank();
+
+  // Animate progress bar
+  setTimeout(() => {
+    const fill = document.getElementById('progress-fill');
+    if (fill) fill.style.width = '42%';
+  }, 500);
+}
+
+function renderLBTable(data) {
+  const rows = document.getElementById('lb-rows');
+  rows.innerHTML = '';
+
+  const userHandle = state.user ? state.user.handle.replace('@','') : null;
+
+  data.forEach((row, i) => {
+    const isUser = userHandle && row.handle.toLowerCase() === userHandle.toLowerCase();
+    const tierBadge = row.tier === 'elite'
+      ? '<span class="tier-badge tier-elite">ELITE</span>'
+      : row.tier === 'pro'
+      ? '<span class="tier-badge tier-pro">PRO</span>'
+      : '<span class="tier-badge tier-free">FREE</span>';
+
+    const div = document.createElement('div');
+    div.className = 'lb-row' + (isUser ? ' user-row' : '');
+    div.innerHTML = `
+      <div>${i < 3 ? MEDALS[i] : '<span class="rank-num">' + (i+1) + '</span>'}</div>
+      <div class="lb-handle"><span class="handle-name">@${row.handle}</span>${isUser ? ' <span style="font-size:10px;color:var(--indigo);font-family:JetBrains Mono,monospace">← YOU</span>' : ''}</div>
+      <div class="lb-score">${row.score}</div>
+      <div class="lb-gained">+${row.gained.toLocaleString()}</div>
+      <div class="lb-posts">${row.posts}</div>
+      <div style="text-align:center">${tierBadge}</div>
+    `;
+    rows.appendChild(div);
+  });
+}
+
+function switchLBTab(btn, tab) {
+  document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  state.leaderboardTab = tab;
+
+  if (tab === 'alltime') {
+    const alltime = LB_DATA_WEEK.map(r => ({
+      ...r,
+      gained: Math.round(r.gained * (2.5 + Math.random())),
+      posts: r.posts * 8,
+      score: Math.min(98, r.score + Math.floor(Math.random() * 5))
+    }));
+    renderLBTable(alltime);
+  } else {
+    renderLBTable(LB_DATA_WEEK);
+  }
+}
+
+function updateMyRank() {
+  if (!state.user) return;
+  const section = document.getElementById('my-rank-section');
+  section.style.display = 'block';
+
+  const myScore = state.proofScore || Math.floor(Math.random() * 30) + 45;
+  const rank = Math.floor(Math.random() * 50) + 5;
+  const gained = Math.floor(Math.random() * 200) + 20;
+
+  document.getElementById('my-rank-num').textContent = '#' + rank;
+  document.getElementById('my-gained').textContent = '+' + gained;
+  document.getElementById('my-proof-score').textContent = myScore;
+  document.getElementById('progress-label-text').textContent = 'Progress to rank #' + (rank - 1);
+  document.getElementById('progress-pct').textContent = '42%';
+}
+
+function startCountdown() {
+  function update() {
+    const now = new Date();
+    const sunday = new Date();
+    sunday.setUTCHours(23,59,59,999);
+    // Find next Sunday
+    const day = sunday.getUTCDay();
+    const daysUntilSunday = (7 - day) % 7 || 7;
+    sunday.setUTCDate(sunday.getUTCDate() + daysUntilSunday);
+
+    const diff = sunday - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    const el = document.getElementById('countdown');
+    if (el) {
+      el.innerHTML = pad(h) + '<span>:</span>' + pad(m) + '<span>:</span>' + pad(s);
+    }
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+function pad(n) { return String(n).padStart(2,'0'); }
+
+function shareLBRank() {
+  const rank = document.getElementById('my-rank-num')?.textContent || '#--';
+  const text = `I'm ranked ${rank} on the PROOF Growth Leaderboard this week.\n\nConnecting my X account was the best move I made for growth.\n\nproof.app $PROOF`;
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+}
+
+// =============================================
+// UTILITIES
+// =============================================
+function countUp(el, from, to, duration) {
+  if (!el) return;
+  const start = performance.now();
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function showToast(msg, icon, type) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast ' + type;
+  toast.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('hiding');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+function fireConfetti() {
+  const colors = ['#6366f1','#a855f7','#ec4899','#f59e0b','#10b981','#ffffff'];
+  for (let i = 0; i < 80; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `
+      left: ${Math.random() * 100}vw;
+      top: ${-Math.random() * 20 - 5}vh;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${Math.random() * 8 + 4}px;
+      height: ${Math.random() * 8 + 4}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${Math.random() * 2 + 2}s;
+      animation-delay: ${Math.random() * 0.5}s;
+      transform: translateX(${(Math.random() - 0.5) * 200}px);
+    `;
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4000);
+  }
+}
+
+// =============================================
+// INIT
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+  // Show landing
+  showView('landing');
+
+  // Smooth appear for landing score on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        initLandingAnimations();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const se = document.getElementById('score-explainer');
+  if (se) observer.observe(se);
+});
+</script>
+</body>
+</html>
