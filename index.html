@@ -2046,7 +2046,7 @@
       <div class="feature-card">
         <div class="feature-icon">🏆</div>
         <h3>Growth Leaderboard</h3>
-        <p>Public ranking of fastest growing accounts using PROOF this week. Win $PROOF prizes every Sunday.</p>
+        <p>Public ranking of fastest growing accounts using PROOF this week. Win cash prizes every Sunday.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📋</div>
@@ -3001,7 +3001,7 @@ function resetAnalysis() {
 function shareScore() {
   const score = state.proofScore || '--';
   const problem = state.topProblem || 'weak hooks';
-  const text = `Just ran my X account through PROOF and scored ${score}/100.\n\nMy biggest problem is "${problem}"\n\nWorking on fixing it this week. What is your score?\n\nproof.app $PROOF`;
+  const text = `Just ran my X account through PROOF and scored ${score}/100.\n\nMy biggest problem is "${problem}"\n\nWorking on fixing it this week. What is your score?\n\nproof.app`;
   window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
 }
 
@@ -3210,7 +3210,7 @@ const TOPICS = [
   { name: 'Solana Season', momentum: 76, posts: 2203, arrow: '🟡', hook: 'Solana is doing something it has never done before. Pay attention.', badge: 'momentum-warm' },
   { name: 'Copy Trading', momentum: 71, posts: 987, arrow: '🟡', hook: 'I copied a top Polymarket trader for 30 days. Here is exactly what happened:', badge: 'momentum-warm' },
   { name: 'Bitcoin to 250k', momentum: 68, posts: 1834, arrow: '🟡', hook: 'ARK just said Bitcoin hits 250k this cycle. Here is the math:', badge: 'momentum-warm' },
-  { name: 'Memecoins vs Altcoins', momentum: 61, posts: 743, arrow: '🔵', hook: 'Stop buying altcoins. Here is why memecoins are outperforming every L1 this cycle:', badge: 'momentum-cool' },
+  { name: 'DeFi Restaking', momentum: 61, posts: 743, arrow: '🔵', hook: 'DeFi restaking is the most underrated yield play nobody is talking about right now:', badge: 'momentum-cool' },
   { name: 'X Algorithm Changes', momentum: 58, posts: 612, arrow: '🔵', hook: 'The X algorithm just changed and most creators have no idea. Here is what is different:', badge: 'momentum-cool' }
 ];
 
@@ -3287,7 +3287,7 @@ const LB_DATA_WEEK = [
   { handle: 'defidegen42', score: 74, gained: 712, posts: 28, tier: 'pro' },
   { handle: 'agentswatcher', score: 72, gained: 634, posts: 14, tier: 'pro' },
   { handle: 'ct_alpha_daily', score: 71, gained: 589, posts: 22, tier: 'elite' },
-  { handle: 'memecoin_lord', score: 69, gained: 534, posts: 41, tier: 'free' },
+  { handle: 'defi_alpha_lord', score: 69, gained: 534, posts: 41, tier: 'free' },
   { handle: 'btc_thesis_guy', score: 68, gained: 478, posts: 17, tier: 'pro' },
   { handle: 'defi_explorer', score: 66, gained: 423, posts: 29, tier: 'pro' },
   { handle: 'solflare_trader', score: 65, gained: 391, posts: 12, tier: 'free' },
@@ -3407,7 +3407,7 @@ function pad(n) { return String(n).padStart(2,'0'); }
 
 function shareLBRank() {
   const rank = document.getElementById('my-rank-num')?.textContent || '#--';
-  const text = `I'm ranked ${rank} on the PROOF Growth Leaderboard this week.\n\nConnecting my X account was the best move I made for growth.\n\nproof.app $PROOF`;
+  const text = `I'm ranked ${rank} on the PROOF Growth Leaderboard this week.\n\nConnecting my X account was the best move I made for growth.\n\nproof.app`;
   window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
 }
 
