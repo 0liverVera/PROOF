@@ -2512,7 +2512,9 @@
 const CONFIG = {
   CLIENT_ID: 'OS1aZWl5NFlRcnNZWlFxOFhLNTY6MTpjaQ',
   REDIRECT_URI: window.location.origin + window.location.pathname.replace(/\/?$/, '/'),
-  SCOPES: 'tweet.read users.read offline.access'
+  SCOPES: 'tweet.read users.read offline.access',
+  // Paste your Cloudflare Worker URL here after deploying worker.js
+  TOKEN_PROXY: 'YOUR_WORKER_URL_HERE'
 };
 
 // =============================================
@@ -2605,7 +2607,11 @@ async function handleOAuthCallback() {
   showToast('Connecting your X account...', '⏳', 'info');
 
   try {
-    const tokenRes = await fetch('https://api.twitter.com/2/oauth2/token', {
+    const tokenEndpoint = CONFIG.TOKEN_PROXY !== 'YOUR_WORKER_URL_HERE'
+      ? CONFIG.TOKEN_PROXY
+      : 'https://api.twitter.com/2/oauth2/token';
+
+    const tokenRes = await fetch(tokenEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
