@@ -1928,7 +1928,7 @@
       <span id="nav-handle" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#d1d5db"></span>
       <span id="nav-tier" class="tier-badge tier-free">FREE</span>
     </div>
-    <button class="btn-connect-nav" id="nav-connect-btn" onclick="showView('analyze')">Connect Account</button>
+    <button class="btn-connect-nav" id="nav-connect-btn" onclick="initiateXOAuth()">Connect with X</button>
   </div>
   <button class="hamburger" onclick="toggleMobile()" id="hamburger">
     <span></span><span></span><span></span>
@@ -1958,9 +1958,10 @@
     <h1 class="hero-tagline">Stop Guessing. Start Growing.</h1>
     <p class="hero-sub">The first real-time X growth intelligence platform. Know exactly why you are not growing and exactly what to fix.</p>
     <div class="hero-buttons">
-      <button class="btn-primary" onclick="showView('analyze')">Analyze My X Account — Free</button>
+      <button class="btn-primary" onclick="initiateXOAuth()">Connect X Account — Free</button>
       <button class="btn-secondary" onclick="showView('leaderboard')">See Live Leaderboard</button>
     </div>
+    <div id="oauth-error-banner" style="display:none;margin-bottom:16px;padding:12px 20px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:10px;font-size:13px;color:#fca5a5;position:relative;z-index:1;max-width:500px;text-align:center"></div>
     <div class="urgency-bar">
       <div class="live-dot"></div>
       <span>LIVE — <strong>1,247</strong> accounts analyzed today — <strong>89 accounts</strong> grew 100+ followers this week using PROOF</span>
@@ -2123,12 +2124,12 @@
           <li>See top 3 improvements</li>
           <li>Basic viral tracker</li>
         </ul>
-        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px" onclick="showView('analyze')">Get Started Free</button>
+        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px" onclick="initiateXOAuth()">Get Started Free</button>
       </div>
       <div class="price-card featured">
         <div class="price-tier text-indigo">Pro</div>
-        <div class="price-amount">1,000</div>
-        <div class="price-sub">$PROOF TOKENS REQUIRED</div>
+        <div class="price-amount">$29</div>
+        <div class="price-sub">PER MONTH</div>
         <ul class="price-features">
           <li>Full post grader with feedback</li>
           <li>Hook rewriter — 3 rewrites</li>
@@ -2136,12 +2137,12 @@
           <li>Full viral tracker</li>
           <li>Growth leaderboard access</li>
         </ul>
-        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px">Unlock with $PROOF</button>
+        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px">Upgrade to Pro</button>
       </div>
       <div class="price-card">
         <div class="price-tier text-purple">Elite</div>
-        <div class="price-amount">10,000</div>
-        <div class="price-sub">$PROOF TOKENS REQUIRED</div>
+        <div class="price-amount">$99</div>
+        <div class="price-sub">PER MONTH</div>
         <ul class="price-features">
           <li>Everything in Pro</li>
           <li>Weekly 1-on-1 action plan</li>
@@ -2149,7 +2150,7 @@
           <li>Early feature access</li>
           <li>Priority leaderboard</li>
         </ul>
-        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px;background:linear-gradient(135deg,#a855f7,#ec4899)">Unlock Elite</button>
+        <button class="btn-primary" style="width:100%;font-size:14px;padding:12px;background:linear-gradient(135deg,#a855f7,#ec4899)">Upgrade to Elite</button>
       </div>
     </div>
   </section>
@@ -2183,9 +2184,8 @@
     <div class="footer-links">
       <a class="footer-link" href="https://x.com" target="_blank">𝕏 Twitter</a>
       <a class="footer-link" href="#" target="_blank">Telegram</a>
-      <button class="btn-primary" style="font-size:13px;padding:8px 18px">Buy $PROOF</button>
     </div>
-    <div class="footer-tagline">Built for CT. Powered by $PROOF.</div>
+    <div class="footer-tagline">Built for serious X creators.</div>
   </footer>
 
 </div><!-- /view-landing -->
@@ -2201,17 +2201,19 @@
     <div id="analyze-form">
       <div class="analyze-step">
         <div class="x-logo">𝕏</div>
-        <div class="analyze-title">Analyze My Account</div>
-        <div class="analyze-sub">Enter your handle and we'll grade your last 10 posts instantly</div>
-        <div class="input-group">
-          <label class="input-label">X Handle</label>
-          <input type="text" class="input-field" id="x-handle" placeholder="@0liverVera" />
+        <div class="analyze-title">Connect Your X Account</div>
+        <div class="analyze-sub">Sign in with X so we can grade your last 10 posts and give you a real growth score</div>
+        <button class="btn-primary" style="width:100%;margin-top:8px;font-size:16px;padding:16px;display:flex;align-items:center;justify-content:center;gap:10px" onclick="initiateXOAuth()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.26 5.632 5.904-5.632Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Sign in with X
+        </button>
+        <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;color:var(--gray);margin-bottom:12px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.5px">Or enter handle manually</div>
+          <div class="input-group" style="margin-bottom:0">
+            <input type="text" class="input-field" id="x-handle" placeholder="@yourhandle" />
+          </div>
+          <button class="btn-secondary" style="width:100%;margin-top:10px;font-size:14px;padding:12px" onclick="runManualAnalysis()">Analyze Without Sign-In →</button>
         </div>
-        <div class="input-group">
-          <label class="input-label">$PROOF Balance (optional — unlock tier bonuses)</label>
-          <input type="number" class="input-field" id="proof-balance" placeholder="0" />
-        </div>
-        <button class="btn-primary" style="width:100%;margin-top:8px;font-size:16px;padding:16px" onclick="runAnalysis()">Run Analysis →</button>
       </div>
     </div>
 
@@ -2296,10 +2298,10 @@
       <!-- UPGRADE -->
       <div class="upgrade-prompt">
         <h3>Want Your Full Analysis?</h3>
-        <p>Unlock the full post grader, hook rewriter, timing optimizer, and weekly 1-on-1 action plan with $PROOF tokens.</p>
+        <p>Upgrade for the full post grader, hook rewriter, timing optimizer, and weekly personalized action plan.</p>
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-          <button class="btn-primary" style="font-size:14px;padding:12px 24px">Unlock Pro — 1,000 $PROOF</button>
-          <button class="btn-primary" style="font-size:14px;padding:12px 24px;background:linear-gradient(135deg,#a855f7,#ec4899)">Unlock Elite — 10,000 $PROOF</button>
+          <button class="btn-primary" style="font-size:14px;padding:12px 24px">Upgrade to Pro — $29/mo</button>
+          <button class="btn-primary" style="font-size:14px;padding:12px 24px;background:linear-gradient(135deg,#a855f7,#ec4899)">Upgrade to Elite — $99/mo</button>
         </div>
       </div>
 
@@ -2429,8 +2431,8 @@
 
     <div class="prize-banner">
       <div class="prize-text">
-        🥇 <strong>500 $PROOF</strong> — 🥈 <strong>250 $PROOF</strong> — 🥉 <strong>100 $PROOF</strong> — 🎲 Random raider <strong>50 $PROOF</strong><br>
-        <span style="font-size:12px;color:var(--gray)">Prizes sent every Sunday to connected wallets</span>
+        🥇 <strong>$500 cash</strong> — 🥈 <strong>$250 cash</strong> — 🥉 <strong>$100 cash</strong> — 🎲 Random entry <strong>$50 cash</strong><br>
+        <span style="font-size:12px;color:var(--gray)">Prizes sent every Sunday to winners</span>
       </div>
       <div>
         <div style="font-size:11px;color:var(--gray);font-family:'JetBrains Mono',monospace;text-align:center;margin-bottom:4px">RESETS IN</div>
@@ -2503,6 +2505,17 @@
 
 <script>
 // =============================================
+// CONFIG — set CLIENT_ID after creating your app at
+// developer.twitter.com → Projects & Apps → OAuth 2.0
+// Set Redirect URI there to match your site URL exactly.
+// =============================================
+const CONFIG = {
+  CLIENT_ID: 'YOUR_CLIENT_ID_HERE',
+  REDIRECT_URI: window.location.origin + window.location.pathname.replace(/\/$/, '') + (window.location.pathname === '/' ? '' : ''),
+  SCOPES: 'tweet.read users.read offline.access'
+};
+
+// =============================================
 // STATE
 // =============================================
 let state = {
@@ -2515,8 +2528,144 @@ let state = {
 // Load from localStorage
 const saved = localStorage.getItem('proof_user');
 if (saved) {
-  state.user = JSON.parse(saved);
+  try {
+    state.user = JSON.parse(saved);
+    updateNavUser();
+  } catch(e) { localStorage.removeItem('proof_user'); }
+}
+
+// =============================================
+// X OAUTH 2.0 (PKCE)
+// =============================================
+function _randomString(len) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+  const arr = new Uint8Array(len);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, b => chars[b % chars.length]).join('');
+}
+
+async function _sha256(plain) {
+  const data = new TextEncoder().encode(plain);
+  return crypto.subtle.digest('SHA-256', data);
+}
+
+function _base64url(buf) {
+  return btoa(String.fromCharCode(...new Uint8Array(buf)))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+}
+
+async function initiateXOAuth() {
+  if (CONFIG.CLIENT_ID === 'YOUR_CLIENT_ID_HERE') {
+    showToast('Set your Twitter Client ID in CONFIG to enable sign-in', '⚠️', 'info');
+    return;
+  }
+  const verifier = _randomString(64);
+  const challenge = _base64url(await _sha256(verifier));
+  const oauthState = _randomString(32);
+  sessionStorage.setItem('pkce_verifier', verifier);
+  sessionStorage.setItem('oauth_state', oauthState);
+
+  const params = new URLSearchParams({
+    response_type: 'code',
+    client_id: CONFIG.CLIENT_ID,
+    redirect_uri: CONFIG.REDIRECT_URI,
+    scope: CONFIG.SCOPES,
+    state: oauthState,
+    code_challenge: challenge,
+    code_challenge_method: 'S256'
+  });
+  window.location.href = 'https://twitter.com/i/oauth2/authorize?' + params.toString();
+}
+
+async function handleOAuthCallback() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const returnedState = params.get('state');
+  const error = params.get('error');
+
+  if (error) {
+    _showOAuthError('X sign-in was cancelled or denied.');
+    window.history.replaceState({}, '', window.location.pathname);
+    return;
+  }
+  if (!code) return;
+
+  const storedState = sessionStorage.getItem('oauth_state');
+  const verifier = sessionStorage.getItem('pkce_verifier');
+  window.history.replaceState({}, '', window.location.pathname);
+
+  if (returnedState !== storedState || !verifier) {
+    _showOAuthError('Auth state mismatch — please try again.');
+    return;
+  }
+
+  sessionStorage.removeItem('oauth_state');
+  sessionStorage.removeItem('pkce_verifier');
+
+  showToast('Connecting your X account...', '⏳', 'info');
+
+  try {
+    const tokenRes = await fetch('https://api.twitter.com/2/oauth2/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        code,
+        grant_type: 'authorization_code',
+        client_id: CONFIG.CLIENT_ID,
+        redirect_uri: CONFIG.REDIRECT_URI,
+        code_verifier: verifier
+      })
+    });
+    const tokenData = await tokenRes.json();
+
+    if (!tokenData.access_token) {
+      _showOAuthError('Could not get access token — check your Client ID and Redirect URI in the Twitter Developer Portal.');
+      return;
+    }
+
+    await _fetchAndSaveProfile(tokenData.access_token);
+  } catch (err) {
+    _showOAuthError('Token exchange failed (likely CORS). You need a small backend proxy — see README for details.');
+    console.error(err);
+  }
+}
+
+async function _fetchAndSaveProfile(accessToken) {
+  const res = await fetch(
+    'https://api.twitter.com/2/users/me?user.fields=name,username,profile_image_url,public_metrics',
+    { headers: { Authorization: 'Bearer ' + accessToken } }
+  );
+  const { data } = await res.json();
+  if (!data) { _showOAuthError('Failed to fetch profile — please try again.'); return; }
+
+  state.user = {
+    handle: '@' + data.username,
+    name: data.name,
+    avatar: data.profile_image_url?.replace('_normal', '_bigger') || '',
+    followers: data.public_metrics?.followers_count ?? 0,
+    tweets: data.public_metrics?.tweet_count ?? 0,
+    accessToken
+  };
+  localStorage.setItem('proof_user', JSON.stringify(state.user));
   updateNavUser();
+  showToast('Connected as @' + data.username + ' ✅', '✅', 'success');
+  showView('analyze');
+  setTimeout(runAnalysis, 300);
+}
+
+function _showOAuthError(msg) {
+  const el = document.getElementById('oauth-error-banner');
+  if (el) { el.textContent = msg; el.style.display = 'block'; }
+  showToast(msg, '❌', 'info');
+}
+
+function disconnectX() {
+  state.user = null;
+  localStorage.removeItem('proof_user');
+  document.getElementById('nav-user').style.display = 'none';
+  document.getElementById('nav-connect-btn').style.display = '';
+  showView('landing');
+  showToast('Disconnected', '✅', 'success');
 }
 
 // =============================================
@@ -2566,19 +2715,23 @@ function updateNavUser() {
   if (!state.user) return;
   document.getElementById('nav-user').style.display = 'flex';
   document.getElementById('nav-connect-btn').style.display = 'none';
-  document.getElementById('nav-handle').textContent = state.user.handle;
-  const badge = document.getElementById('nav-tier');
-  const bal = parseInt(state.user.balance) || 0;
-  if (bal >= 10000) {
-    badge.textContent = 'ELITE';
-    badge.className = 'tier-badge tier-elite';
-  } else if (bal >= 1000) {
-    badge.textContent = 'PRO';
-    badge.className = 'tier-badge tier-pro';
-  } else {
-    badge.textContent = 'FREE';
-    badge.className = 'tier-badge tier-free';
+  const handleEl = document.getElementById('nav-handle');
+  handleEl.textContent = state.user.handle;
+  if (state.user.avatar) {
+    const existing = document.getElementById('nav-avatar');
+    if (!existing) {
+      const img = document.createElement('img');
+      img.id = 'nav-avatar';
+      img.src = state.user.avatar;
+      img.style.cssText = 'width:24px;height:24px;border-radius:50%;object-fit:cover;cursor:pointer';
+      img.title = 'Click to disconnect';
+      img.onclick = disconnectX;
+      document.getElementById('nav-user').prepend(img);
+    }
   }
+  const badge = document.getElementById('nav-tier');
+  badge.textContent = 'FREE';
+  badge.className = 'tier-badge tier-free';
 }
 
 // =============================================
@@ -2631,17 +2784,17 @@ function animateLandingScore(total, scores) {
 // =============================================
 // ANALYZE FLOW
 // =============================================
-function runAnalysis() {
-  const handle = document.getElementById('x-handle').value.trim() || '@anon';
-  const balance = document.getElementById('proof-balance').value || '0';
-
-  // Save user
-  state.user = {
-    handle: handle.startsWith('@') ? handle : '@' + handle,
-    balance: balance
-  };
+function runManualAnalysis() {
+  const raw = document.getElementById('x-handle').value.trim();
+  if (!raw) { showToast('Enter your X handle first', '⚠️', 'info'); return; }
+  state.user = { handle: raw.startsWith('@') ? raw : '@' + raw };
   localStorage.setItem('proof_user', JSON.stringify(state.user));
   updateNavUser();
+  runAnalysis();
+}
+
+function runAnalysis() {
+  if (!state.user) { showView('analyze'); return; }
 
   // Show loading
   document.getElementById('analyze-form').style.display = 'none';
@@ -2684,15 +2837,8 @@ function showDashboard() {
   document.getElementById('db-handle').textContent = state.user.handle;
 
   // Tier badge
-  const bal = parseInt(state.user.balance) || 0;
   const tierEl = document.getElementById('db-tier-badge');
-  if (bal >= 10000) {
-    tierEl.innerHTML = '<span class="tier-badge tier-elite">⚡ ELITE</span>';
-  } else if (bal >= 1000) {
-    tierEl.innerHTML = '<span class="tier-badge tier-pro">✦ PRO</span>';
-  } else {
-    tierEl.innerHTML = '<span class="tier-badge tier-free">FREE</span>';
-  }
+  tierEl.innerHTML = '<span class="tier-badge tier-free">FREE</span>';
 
   // Animate big score circle
   setTimeout(() => {
@@ -3319,6 +3465,9 @@ function fireConfetti() {
 // INIT
 // =============================================
 document.addEventListener('DOMContentLoaded', () => {
+  // Handle OAuth callback first (if redirected back from Twitter)
+  handleOAuthCallback();
+
   // Show landing
   showView('landing');
 
